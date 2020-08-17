@@ -32,7 +32,7 @@
     <engines>
       <engine name="cordova" version=">=3.1.0" /><!-- Needs cordova/urlutil -->
     </engines>
-<preference name="OverrideUserAgent" value="Mozilla/5.0 Google" />
+<!--<preference name="OverrideUserAgent" value="Mozilla/5.0 Google" />-->
 
     <!-- android -->
     <platform name="android">
