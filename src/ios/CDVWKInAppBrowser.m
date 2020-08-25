@@ -209,7 +209,7 @@ static CDVWKInAppBrowser* instance = nil;
     }
 
     if (self.inAppBrowserViewController == nil) {
-        NSString* userAgent =@"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
+        NSString* userAgent =@"Version/8.0.2 Safari/600.2.5";
         NSString* overrideUserAgent = userAgent;//[self settingForKey:@"OverrideUserAgent"];
         NSString* appendUserAgent = userAgent;//[self settingForKey:@"AppendUserAgent"];
              NSLog(@"USer Agent %@",userAgent);
