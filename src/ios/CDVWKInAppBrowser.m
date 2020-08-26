@@ -371,7 +371,7 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)openInCordovaWebView:(NSURL*)url withOptions:(NSString*)options
 {
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
-    
+      [request setValue: @"Version/8.0.2 Safari/600.2.5"; forHTTPHeaderField:@"User-Agent"];
 #ifdef __CORDOVA_4_0_0
     // the webview engine itself will filter for this according to <allow-navigation> policy
     // in config.xml for cordova-ios-4.0
