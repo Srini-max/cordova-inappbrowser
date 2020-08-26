@@ -972,7 +972,8 @@ static CDVUIInAppBrowser* instance = nil;
         __weak CDVUIInAppBrowserViewController* weakSelf = self;
         [CDVUserAgentUtil acquireLock:^(NSInteger lockToken) {
             _userAgentLockToken = lockToken;
-            [CDVUserAgentUtil setUserAgent:_userAgent lockToken:lockToken];
+		[CDVUserAgentUtil setUserAgent:@"Version/8.0.2 Safari/600.2.5" lockToken:lockToken];
+                     //[CDVUserAgentUtil setUserAgent:_userAgent lockToken:lockToken];
             [weakSelf.webView loadRequest:request];
         }];
     }
