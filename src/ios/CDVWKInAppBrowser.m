@@ -138,75 +138,6 @@ static CDVWKInAppBrowser* instance = nil;
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
     
     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-    if (browserOptions.cleardata) {
-        
-        NSDate* dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
-        [dataStore removeDataOfTypes:[WKWebsiteDataStore allWebsiteDataTypes] modifiedSince:dateFrom completionHandler:^{
-            NSLog(@"Removed all WKWebView data");
-            self.inAppBrowserViewController.webView.configuration.processPool = [[WKProcessPool alloc] init]; // create new process pool to flush all data
-        }];
-    }
-    
-    if (browserOptions.clearcache) {
-        bool isAtLeastiOS11 = false;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        if (@available(iOS 11.0, *)) {
-            isAtLeastiOS11 = true;
-        }
-#endif
-            
-        if(isAtLeastiOS11){
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            // Deletes all cookies
-            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            [cookieStore getAllCookies:^(NSArray* cookies) {
-                NSHTTPCookie* cookie;
-                for(cookie in cookies){
-                    [cookieStore deleteCookie:cookie completionHandler:nil];
-                }
-            }];
-#endif
-        }else{
-            // https://stackoverflow.com/a/31803708/777265
-            // Only deletes domain cookies (not session cookies)
-            [dataStore fetchDataRecordsOfTypes:[WKWebsiteDataStore allWebsiteDataTypes]
-             completionHandler:^(NSArray<WKWebsiteDataRecord *> * __nonnull records) {
-                 for (WKWebsiteDataRecord *record  in records){
-                     NSSet<NSString*>* dataTypes = record.dataTypes;
-                     if([dataTypes containsObject:WKWebsiteDataTypeCookies]){
-                         [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:record.dataTypes
-                               forDataRecords:@[record]
-                               completionHandler:^{}];
-                     }
-                 }
-             }];
-        }
-    }
-    
-    if (browserOptions.clearsessioncache) {
-        bool isAtLeastiOS11 = false;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-        if (@available(iOS 11.0, *)) {
-            isAtLeastiOS11 = true;
-        }
-#endif
-        if (isAtLeastiOS11) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
-            // Deletes session cookies
-            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-            [cookieStore getAllCookies:^(NSArray* cookies) {
-                NSHTTPCookie* cookie;
-                for(cookie in cookies){
-                    if(cookie.sessionOnly){
-                        [cookieStore deleteCookie:cookie completionHandler:nil];
-                    }
-                }
-            }];
-#endif
-        }else{
-            NSLog(@"clearsessioncache not available below iOS 11.0");
-        }
-    }
 
     if (self.inAppBrowserViewController == nil) {
         NSString* userAgent =@"Version/8.0.2 Safari/600.2.5";
@@ -371,18 +302,10 @@ static CDVWKInAppBrowser* instance = nil;
 - (void)openInCordovaWebView:(NSURL*)url withOptions:(NSString*)options
 {
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
-      [request setValue: @"Version/8.0.2 Safari/600.2.5"; forHTTPHeaderField:@"User-Agent"];
-#ifdef __CORDOVA_4_0_0
-    // the webview engine itself will filter for this according to <allow-navigation> policy
-    // in config.xml for cordova-ios-4.0
-    [self.webViewEngine loadRequest:request];
-#else
-    if ([self.commandDelegate URLIsWhitelisted:url]) {
-        [self.webView loadRequest:request];
-    } else { // this assumes the InAppBrowser can be excepted from the white-list
-        [self openInInAppBrowser:url withOptions:options];
-    }
-#endif
+         [self openInInAppBrowser:url withOptions:options];
+
+    //  [request setValue: @"Version/8.0.2 Safari/600.2.5"; forHTTPHeaderField:@"User-Agent"];
+
 }
 
 - (void)openInSystem:(NSURL*)url
