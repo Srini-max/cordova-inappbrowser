@@ -131,29 +131,7 @@ static CDVUIInAppBrowser* instance = nil;
 {
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
 
-    if (browserOptions.clearcache) {
-        NSHTTPCookie *cookie;
-        NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        for (cookie in [storage cookies])
-        {
-            if (![cookie.domain isEqual: @".^filecookies^"]) {
-                [storage deleteCookie:cookie];
-            }
-        }
-    }
-
-    if (browserOptions.clearsessioncache) {
-        NSHTTPCookie *cookie;
-        NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        for (cookie in [storage cookies])
-        {
-            if (![cookie.domain isEqual: @".^filecookies^"] && cookie.isSessionOnly) {
-                [storage deleteCookie:cookie];
-            }
-        }
-    }
-
-    if (self.inAppBrowserViewController == nil) {
+     if (self.inAppBrowserViewController == nil) {
         NSString* userAgent = @"Version/8.0.2 Safari/600.2.5";// [CDVUserAgentUtil originalUserAgent];
         NSString* overrideUserAgent =userAgent;// [self settingForKey:@"OverrideUserAgent"];
         NSString* appendUserAgent = userAgent;//[self settingForKey:@"AppendUserAgent"];
@@ -301,18 +279,10 @@ static CDVUIInAppBrowser* instance = nil;
 - (void)openInCordovaWebView:(NSURL*)url withOptions:(NSString*)options
 {
     NSURLRequest* request = [NSURLRequest requestWithURL:url];
-    [request setValue: @"Version/8.0.2 Safari/600.2.5"; forHTTPHeaderField:@"User-Agent"];
-#ifdef __CORDOVA_4_0_0
-    // the webview engine itself will filter for this according to <allow-navigation> policy
-    // in config.xml for cordova-ios-4.0
-    [self.webViewEngine loadRequest:request];
-#else
-    if ([self.commandDelegate URLIsWhitelisted:url]) {
-        [self.webView loadRequest:request];
-    } else { // this assumes the InAppBrowser can be excepted from the white-list
+   // [request setValue: @"Version/8.0.2 Safari/600.2.5"; forHTTPHeaderField:@"User-Agent"];
+
         [self openInInAppBrowser:url withOptions:options];
-    }
-#endif
+ 
 }
 
 - (void)openInSystem:(NSURL*)url
