@@ -131,7 +131,7 @@ static CDVUIInAppBrowser* instance = nil;
 {
     CDVInAppBrowserOptions* browserOptions = [CDVInAppBrowserOptions parseOptions:options];
 
-     if (self.inAppBrowserViewController == nil) {
+    // if (self.inAppBrowserViewController == nil) {
         NSString* userAgent = @"Version/8.0.2 Safari/600.2.5";// [CDVUserAgentUtil originalUserAgent];
         NSString* overrideUserAgent =userAgent;// [self settingForKey:@"OverrideUserAgent"];
         NSString* appendUserAgent = userAgent;//[self settingForKey:@"AppendUserAgent"];
@@ -147,7 +147,7 @@ static CDVUIInAppBrowser* instance = nil;
         if ([self.viewController conformsToProtocol:@protocol(CDVScreenOrientationDelegate)]) {
             self.inAppBrowserViewController.orientationDelegate = (UIViewController <CDVScreenOrientationDelegate>*)self.viewController;
         }
-    }
+   //}
 
     [self.inAppBrowserViewController showLocationBar:browserOptions.location];
     [self.inAppBrowserViewController showToolBar:browserOptions.toolbar :browserOptions.toolbarposition];
