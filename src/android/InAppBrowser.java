@@ -1002,8 +1002,8 @@ public class InAppBrowser extends CordovaPlugin {
                     inAppWebView.addJavascriptInterface(new JsObject(), "cordova_iab");
                 }
 
-                String overrideUserAgent ="Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"; //"Mozilla/5.0 Google";// preferences.getString("OverrideUserAgent", null);
-                String appendUserAgent =  "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19";//"Mozilla/5.0 Google";// preferences.getString("AppendUserAgent", null);
+                String overrideUserAgent = "Chrome/56.0.0.0 Mobile";//"Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"; //"Mozilla/5.0 Google";// preferences.getString("OverrideUserAgent", null);
+                String appendUserAgent =   "Chrome/56.0.0.0 Mobile"; //"Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19";//"Mozilla/5.0 Google";// preferences.getString("AppendUserAgent", null);
 
                 if (overrideUserAgent != null) {
                     settings.setUserAgentString(overrideUserAgent);
